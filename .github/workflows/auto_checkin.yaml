@@ -28,29 +28,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. 生成随机分钟值并等待
-      - name: Generate random minute and wait
+      # 4. 生成 1 到 5 分钟的随机等待时间
+      - name: Generate random wait time (1-5 minutes)
         id: random_wait
         run: |
-          # 生成 1 到 10 之间的随机分钟值
-          RANDOM_MINUTE=$((RANDOM % 10))
-          echo "随机分钟值: $RANDOM_MINUTE"
+          # 生成 1 到 5 之间的随机数（分钟）
+          RANDOM_WAIT=$(( (RANDOM % 5) + 1 ))
+          echo "随机等待时间: $RANDOM_WAIT 分钟"
 
-          # 获取当前分钟值
-          CURRENT_MINUTE=$(date +%M)
-
-          # 计算需要等待的时间（秒）
-          if [ "$CURRENT_MINUTE" -gt "$RANDOM_MINUTE" ]; then
-            # 如果当前分钟已经超过目标分钟，等待到下一小时
-            WAIT_SECONDS=$(( (60 - CURRENT_MINUTE + RANDOM_MINUTE) * 60 ))
-            echo "当前分钟 ($CURRENT_MINUTE) 已超过目标分钟 ($RANDOM_MINUTE)，等待到下一小时。"
-          else
-            # 否则，等待到目标分钟
-            WAIT_SECONDS=$(( (RANDOM_MINUTE - CURRENT_MINUTE) * 60 ))
-            echo "当前分钟 ($CURRENT_MINUTE) 未超过目标分钟 ($RANDOM_MINUTE)，等待到目标时间。"
-          fi
-
+          # 将分钟转换为秒
+          WAIT_SECONDS=$((RANDOM_WAIT * 60))
           echo "等待时间: $WAIT_SECONDS 秒"
+
+          # 等待到随机时间
           sleep $WAIT_SECONDS
 
       # 5. 运行脚本

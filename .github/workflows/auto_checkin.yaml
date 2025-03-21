@@ -35,24 +35,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 5. 随机等待与任务执行（保持原有配置）
-      - name: Generate random minute and wait
+      # 5. 生成 1 到 5 分钟的随机等待时间
+      - name: Generate random wait time (1-5 minutes)
         id: random_wait
         run: |
-          RANDOM_MINUTE=$((RANDOM % 60))
-          CURRENT_MINUTE=$(date +%M)
-          if [ "$CURRENT_MINUTE" -gt "$RANDOM_MINUTE" ]; then
-            WAIT_SECONDS=$(( (60 - CURRENT_MINUTE + RANDOM_MINUTE) * 60 ))
-          else
-            WAIT_SECONDS=$(( (RANDOM_MINUTE - CURRENT_MINUTE) * 60 ))
-          fi
+          # 生成 1 到 5 之间的随机数（分钟）
+          RANDOM_WAIT=$(( (RANDOM % 5) + 1 ))
+          echo "随机等待时间: $RANDOM_WAIT 分钟"
+
+          # 将分钟转换为秒
+          WAIT_SECONDS=$((RANDOM_WAIT * 60))
+          echo "等待时间: $WAIT_SECONDS 秒"
+
+          # 等待到随机时间
           sleep $WAIT_SECONDS
 
+      # 6. 运行脚本
       - name: Run auto checkin script
         id: run_script
         continue-on-error: true
         env:
           CONFIGS: ${{ secrets.CONFIGS }}
         run: |
-          echo "任务执行时间：$(date)"
+          echo "任务在随机时间执行：$(date)"
           python main.py

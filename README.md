@@ -1,48 +1,74 @@
 # Kuro-AutoSignin
 
-自动化每日任务，轻松管理库街区论坛与游戏签到 
+自动化每日任务，轻松管理库街区论坛与游戏签到 （魔改workflow）
 
 ## 注意
 
 仅供学习交流使用，请勿用于非法用途
 
 ## 使用说明
+# 库街区 Auto Sign Job
 
-1. **替换个人信息**：请通过抓库街区的包替换`config/data.json`脚本中的 `token`、`devcode`、 `wwroleId`、`eeeroleId`、 `userId` 和 `distinct_id`。`wwroleId`、`eeeroleId`如只需要签到一个则另一个空着。
-2. **获取 Token**：使用 `tools.py` 来获取你的 `token`（此方法用于不想折腾安卓抓包并且客户端不能再次登录，库街区的 token 如果新设备登陆了会刷新）；或者直接抓包。
-3. **签到信息推送**：如需要开启请在`config/data.json`中设置`"push":1`,不开启为`0`,在 `/config/push.ini` 中填写信息，具体参照[配置文档](/config/README.md)，感谢https://github.com/Womsxd/MihoyoBBSTools 项目提供推送方式
-4. **云函数支持**：入口为 `index.handler`。
-5. **serverid设置**：战双serverid如果不对请自行抓包更正。
+你可以在每天指定的时间自动运行签到脚本(包含社区签到和奖励签到)，而无需手动操作。
+注：原仓库[[Kuro-autosignin](https://github.com/mxyooR/Kuro-autosignin)]有消息推送等功能，魔改版注释掉了
 
-## 环境依赖
+## 如何使用
 
-- NodeJS
-  - 国内: <https://nodejs.cn/download/>
-  - 官网: [Node.js — Download Node.js® (nodejs.org)](https://nodejs.org/en/download/package-manager)
-- Python 环境
-  - `pip install -r ./requirements.txt`
+### 1. Fork 仓库
 
-## 短信登录工具说明
+首先，点击右上角的 `Fork` 按钮，将这个仓库 Fork 到你自己的 GitHub 账户下。
 
-现已将极验验证的接口转为图标点选，并重新编写参数加密部分。目前图片识别使用网上的模型以及`ddddocr`，成功率有点感人但凑活着用吧。若不通过可多尝试几次
+### 2. 设置 GitHub Secrets
 
-**图片处理部分代码来自**[Bump-mann/simple_ocr: 一个简单的识别验证码的代码](https://github.com/Bump-mann/simple_ocr)
+为了确保签到脚本能够正常运行，你需要将必要的敏感信息([token](https://blog.tomys.top/2023-07/kuro-token/))存储在 GitHub
+Secrets 中。
 
-## 青龙面板运行方法
+#### 配置示例
+```
+[{
+	"name" : "被签到者的姓名",
+  "wwroleId": "可以抓包获取 鸣潮的uid 不签到不填空着",
+  "eeeroleId": "可以抓包获取 站双的uid 不签到不填空着",
+  "tokenraw": "抓包获取的token",
+  "userId": "库街区的id 可以抓包获取",
+  "devCode":"设备代码 可以随机生成或者抓包获取"
+	"distinct_id": "抓包获取同名字段"
+}]
+```
 
-1. **拉取项目到本地**：将项目克隆到本地目录。
-2. **获取个人信息**：捕获库街区的包，获取并填写好 `data.json` 中的 `token`、`devcode`、`wwroleId`、`eeeroleId`、`userId` 和 `distinct_id`。
-3. **创建订阅**：在青龙面板中创建新的订阅任务。
-   - 名称：库街区签到
-   - 类型：公开仓库
-   - 链接：<https://github.com/mxyooR/Kuro-autosignin.git>
-   - 定时类型：crontab
-   - 定时规则：1 9 * * *
-   - 白名单：main.py
-   - 依赖文件：log|game_check_in|bbs_sgin_in|push
+1. 进入你 Fork 后的仓库页面。
+2. 点击 `Settings` 选项卡。
+3. 在左侧菜单中选择 `Secrets and variables` > `Actions`。
+4. 点击 `New repository secret` 按钮。
+5. 在 `Name` 字段中输入 `CONFIGS`，在 `Value` 字段中输入你的签到脚本所需的配置，注意不需要转义，写入正确的数组JSON即可。
+6. 点击 `Add secret` 保存。
 
-4. **导入 `data.json`**：在青龙面板的脚本管理中，进入 `mxyooR_Kuro-autiosignin/config` 文件目录下，导入并替换修改好的 `data.json` 文件。
-5. **添加依赖**：在青龙面板的依赖管理里面安装requests依赖。
-6. **推送选项**：青龙面板可以使用青龙自带的推送，不必用本脚本自带的推送，如要使用，请填写push.ini放入/config目录下。
+### 3. 触发工作流
 
-这样设置完成后，青龙面板将会每天按时自动运行库街区的签到任务。
+#### 自动触发
+
+工作流已经配置为每天北京时间早上 6 点（UTC 时间 22:00）自动运行。你无需手动操作，只需确保仓库中的代码和 Secrets 配置正确即可。
+
+#### 手动触发
+
+如果你想立即运行工作流，可以手动触发：
+
+1. 进入你 Fork 后的仓库页面。
+2. 点击 `Actions` 选项卡。
+3. 在左侧菜单中选择 `Auto Sign Job`。
+4. 点击右上角的 `Run workflow` 按钮，选择 `Run workflow` 即可手动触发。
+
+### 4. 查看运行结果
+
+每次工作流运行后，你可以在 `Actions` 选项卡中查看运行结果。如果签到成功，你应该能够看到相应的日志输出。签到失败则会报错。
+
+## 注意事项
+
+- 确保 `CONFIGS` 的安全性，不要将其直接写在代码中。
+- 如果需要修改定时任务的执行时间，可以编辑 [`.github/workflows/auto_sign.yaml`](.github/workflows/auto_checkin.yaml) 文件中的
+  `cron` 表达式。
+
+## 特别感谢
+
+原仓库 [[Kuro-autosignin](https://github.com/mxyooR/Kuro-autosignin)]
+workflow参考：[[kurobbs_auto_checkin](https://github.com/leeezep/kurobbs_auto_checkin)]

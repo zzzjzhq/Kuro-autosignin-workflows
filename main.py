@@ -12,8 +12,8 @@ from game_check_in import ww_game_check_in,eee_game_check_in
 from bbs_sgin_in import KuroBBS_sign_in
 import os
 
-FILE_PATH = os.path.dirname(os.path.abspath(__file__))
-DATA_PATH = FILE_PATH + '/config/data.json'
+# FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+# DATA_PATH = FILE_PATH + '/config/data.json'
 
 def sign_in():
     now = datetime.datetime.now()

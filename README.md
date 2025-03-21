@@ -67,6 +67,7 @@ Secrets 中。
 - 确保 `CONFIGS` 的安全性，不要将其直接写在代码中。
 - 如果需要修改定时任务的执行时间，可以编辑 [`.github/workflows/auto_sign.yaml`](.github/workflows/auto_checkin.yaml) 文件中的
   `cron` 表达式。
+- fork仓库执行actions在仓库没有改动的情况下最多只能白嫖60天，之后actions的workflow功能会被禁用，需要自己手动再打开
 
 ## 特别感谢
 

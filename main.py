@@ -25,7 +25,7 @@ def sign_in():
 
     
     # 从数据中获取用户数据列表
-    users = json.loads(os.getenv("TOKEN"))
+    users = json.loads(os.getenv("CONFIGS"))
     # checkpush = data['push']
     server_message = ""
     for user in users:

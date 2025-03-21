@@ -23,7 +23,7 @@ def sign_in():
     # with open(DATA_PATH, 'r', encoding="utf-8-sig") as f:
     #     data = json.load(f)
 
-    distinct_id = data['distinct_id']
+    
     # 从数据中获取用户数据列表
     users = json.load(os.getenv("TOKEN"))
     # checkpush = data['push']
@@ -35,6 +35,7 @@ def sign_in():
         tokenraw = user['tokenraw']
         userId = user['userId']
         devcode = user['devCode']
+        distinct_id = user['distinct_id']
 
         log_message(name+"开始签到")
         # 鸣潮签到

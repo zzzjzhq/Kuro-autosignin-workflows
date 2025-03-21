@@ -20,13 +20,13 @@ def sign_in():
     month = now.strftime("%m")
 
     # 从JSON文件中读取数据
-    with open(DATA_PATH, 'r', encoding="utf-8-sig") as f:
-        data = json.load(f)
+    # with open(DATA_PATH, 'r', encoding="utf-8-sig") as f:
+    #     data = json.load(f)
 
     distinct_id = data['distinct_id']
     # 从数据中获取用户数据列表
-    users = data['users']
-    checkpush = data['push']
+    users = json.load(os.getenv("TOKEN"))
+    # checkpush = data['push']
     server_message = ""
     for user in users:
         name = user['name']
@@ -53,9 +53,9 @@ def sign_in():
         log_message("=====================================")
 
     
-    if checkpush:
-        from push import push
-        push(server_message)
+    # if checkpush:
+    #     from push import push
+    #     push(server_message)
 
 if __name__ == "__main__":
     sign_in()

@@ -33,6 +33,6 @@ jobs:
         id: run_script
         continue-on-error: true
         env:
-          TOKEN: ${{ secrets.TOKEN }}
+          CONFIGS: ${{ secrets.CONFIGS }}
         run: |
           python main.py

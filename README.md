@@ -1,6 +1,6 @@
 # Kuro-AutoSignin-workflows
 
-自动化每日任务，轻松管理库街区论坛与游戏签到 （魔改workflow）
+自动化每日任务，轻松管理库街区论坛与游戏签到 （魔改workflow）。
 
 ## 注意
 

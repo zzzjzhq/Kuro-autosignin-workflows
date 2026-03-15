@@ -10,7 +10,7 @@
 # 库街区 Auto Sign Job
 
 你可以在每天指定的时间自动运行签到脚本(包含社区签到和奖励签到)，而无需手动操作
-注：原仓库[[Kuro-autosignin](https://github.com/mxyooR/Kuro-autosignin)]有消息推送等功能，魔改版注释掉了
+注：原仓库[[Kuro-autosignin](https://github.com/mxyooR/Kuro-autosignin)]有消息推送等功能，魔改版注释掉了.
 
 ## 如何使用
 
